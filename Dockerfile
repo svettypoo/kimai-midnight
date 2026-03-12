@@ -27,9 +27,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 
 # ── Apache ───────────────────────────────────────────────────────────
 RUN echo "Listen 8001" > /etc/apache2/ports.conf && \
-    rm -f /etc/apache2/mods-enabled/mpm_event.load /etc/apache2/mods-enabled/mpm_event.conf \
-          /etc/apache2/mods-enabled/mpm_worker.load /etc/apache2/mods-enabled/mpm_worker.conf && \
-    a2enmod mpm_prefork rewrite && touch /use_apache
+    ls -la /etc/apache2/mods-enabled/mpm* 2>&1 && \
+    a2enmod rewrite && touch /use_apache
 COPY docker-assets/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # ── Copy source ──────────────────────────────────────────────────────
