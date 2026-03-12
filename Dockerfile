@@ -50,7 +50,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN export COMPOSER_HOME=/composer && mkdir -p /composer && \
     composer install --working-dir=/opt/kimai --no-dev --optimize-autoloader --no-scripts && \
     composer clearcache && \
-    composer require --update-no-dev --working-dir=/opt/kimai laminas/laminas-ldap --no-scripts
+    composer require --update-no-dev --working-dir=/opt/kimai laminas/laminas-ldap --no-scripts && \
+    /opt/kimai/bin/console assets:install public
 
 # ── PHP production ini ───────────────────────────────────────────────
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini && \
