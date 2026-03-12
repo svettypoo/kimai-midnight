@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\MidnightExpenseBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Resources}'
+
+    KimaiPlugin\MidnightExpenseBundle\Repository\ExpenseRepository:
+        tags: ['doctrine.repository_service']
+
+    KimaiPlugin\MidnightExpenseBundle\Controller\ExpenseController:
+        tags: ['controller.service_arguments']

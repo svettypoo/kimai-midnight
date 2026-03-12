@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Budget Overview{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-0"><i class="fas fa-chart-pie"></i> Project Budget Overview</h2>
+        </div>
+    </div>
+
+    {% if projectBudgets|length == 0 %}
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-piggy-bank fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No projects with time budgets found.</p>
+                <p class="text-muted small">Set a time budget on a project to see it tracked here.</p>
+            </div>
+        </div>
+    {% else %}
+        {# Summary cards #}
+        <div class="row mb-4">
+            {% set totalProjects = projectBudgets|length %}
+            {% set overBudget = projectBudgets|filter(p => p.overBudget)|length %}
+            {% set critical = projectBudgets|filter(p => p.percentRaw >= 90 and not p.overBudget)|length %}
+            {% set healthy = totalProjects - overBudget - critical %}
+
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0">{{ totalProjects }}</h3>
+                        <small class="text-muted">Total Projects</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm" style="border-left: 4px solid #22c55e !important;">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0 text-success">{{ healthy }}</h3>
+                        <small class="text-muted">Healthy (&lt; 90%)</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm" style="border-left: 4px solid #f59e0b !important;">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0 text-warning">{{ critical }}</h3>
+                        <small class="text-muted">Critical (90-100%)</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm" style="border-left: 4px solid #ef4444 !important;">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0 text-danger">{{ overBudget }}</h3>
+                        <small class="text-muted">Over Budget</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Project budget bars #}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent">
+                <h5 class="mb-0"><i class="fas fa-tasks"></i> Budget Progress</h5>
+            </div>
+            <div class="card-body">
+                {% for item in projectBudgets %}
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div>
+                                <strong>{{ item.project.name }}</strong>
+                                {% if item.project.customer %}
+                                    <small class="text-muted ms-2">{{ item.project.customer.name }}</small>
+                                {% endif %}
+                            </div>
+                            <div class="text-end">
+                                <span class="fw-bold">{{ item.usedHours }}h</span>
+                                <span class="text-muted">/ {{ item.budgetHours }}h</span>
+                                {% if item.overBudget %}
+                                    <span class="badge bg-danger ms-1">OVER</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="progress" style="height: 12px; border-radius: 6px;">
+                            {% if item.percentRaw > 100 %}
+                                {% set barColor = '#ef4444' %}
+                            {% elseif item.percentRaw >= 90 %}
+                                {% set barColor = '#ef4444' %}
+                            {% elseif item.percentRaw >= 75 %}
+                                {% set barColor = '#f59e0b' %}
+                            {% else %}
+                                {% set barColor = '#22c55e' %}
+                            {% endif %}
+
+                            <div class="progress-bar" role="progressbar"
+                                style="width: {{ item.percentUsed }}%; background-color: {{ barColor }}; border-radius: 6px;"
+                                aria-valuenow="{{ item.percentUsed }}"
+                                aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-1">
+                            <small class="text-muted">{{ item.remainingHours }}h remaining</small>
+                            <small style="color: {{ barColor }}; font-weight: 600;">{{ item.percentRaw }}%</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# Recent alerts #}
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-bell"></i> Recent Budget Alerts</h5>
+                <span class="badge bg-secondary">{{ recentAlerts|length }}</span>
+            </div>
+            <div class="card-body p-0">
+                {% if recentAlerts|length == 0 %}
+                    <div class="text-muted text-center py-4">No budget alerts triggered yet</div>
+                {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Threshold</th>
+                                    <th>Triggered</th>
+                                    <th>Notified</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for alert in recentAlerts %}
+                                <tr>
+                                    <td>{{ alert.project.name }}</td>
+                                    <td>
+                                        {% if alert.thresholdPercent >= 100 %}
+                                            <span class="badge bg-danger">{{ alert.thresholdPercent }}%</span>
+                                        {% elseif alert.thresholdPercent >= 90 %}
+                                            <span class="badge bg-danger">{{ alert.thresholdPercent }}%</span>
+                                        {% elseif alert.thresholdPercent >= 75 %}
+                                            <span class="badge bg-warning text-dark">{{ alert.thresholdPercent }}%</span>
+                                        {% else %}
+                                            <span class="badge bg-info">{{ alert.thresholdPercent }}%</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ alert.triggeredAt|date('M d, Y H:i') }}</td>
+                                    <td>
+                                        {% if alert.notified %}
+                                            <i class="fas fa-check text-success"></i>
+                                        {% else %}
+                                            <i class="fas fa-clock text-warning"></i>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

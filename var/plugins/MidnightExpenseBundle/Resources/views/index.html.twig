@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Expenses{% endblock %}
+{% block page_subtitle %}Track and manage project expenses{% endblock %}
+
+{% block main %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="card-title">Expenses</h3>
+        <a href="{{ path('expense_create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> New Expense
+        </a>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Project</th>
+                        <th>Customer</th>
+                        <th class="text-end">Amount</th>
+                        <th>Currency</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.expenseDate|date('Y-m-d') }}</td>
+                        <td>
+                            <span class="badge bg-secondary">{{ expense.category }}</span>
+                        </td>
+                        <td>{{ expense.description|length > 80 ? expense.description|slice(0, 80) ~ '...' : expense.description }}</td>
+                        <td>{{ expense.project ? expense.project.name : '-' }}</td>
+                        <td>{{ expense.customer ? expense.customer.name : '-' }}</td>
+                        <td class="text-end fw-bold">{{ expense.amount|number_format(2) }}</td>
+                        <td>{{ expense.currency }}</td>
+                        <td class="text-center">
+                            <a href="{{ path('expense_edit', {id: expense.id}) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ path('expense_delete', {id: expense.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Delete this expense?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ expense.id) }}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">No expenses recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                {% if expenses|length > 0 %}
+                <tfoot>
+                    <tr class="fw-bold">
+                        <td colspan="5" class="text-end">Total:</td>
+                        <td class="text-end">{{ total|number_format(2) }}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

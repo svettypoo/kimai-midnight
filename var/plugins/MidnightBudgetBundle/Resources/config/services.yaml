@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\MidnightBudgetBundle\Controller\:
+        resource: '../../Controller/'
+        tags: ['controller.service_arguments']
+
+    KimaiPlugin\MidnightBudgetBundle\Repository\:
+        resource: '../../Repository/'
+
+    KimaiPlugin\MidnightBudgetBundle\EventSubscriber\:
+        resource: '../../EventSubscriber/'

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block page_title %}{{ 'menu.approval_bundle'|trans }}{% endblock %}
+
+{% block main %}
+    {% if warningNoUsers is defined %}
+      {% if warningNoUsers %}
+        {{ widgets.callout('danger', 'warning.noUserToApprove'|trans) }}
+      {% endif %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-12" id="ApprovalBundle-content">
+            <div class="card">
+                <div class="card-header">
+                    {{ include('@Approval/navigation.html.twig') }}
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        {% block report %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

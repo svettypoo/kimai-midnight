@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\MidnightHRBundle\Controller\:
+        resource: '../../Controller/'
+        tags: ['controller.service_arguments']
+
+    KimaiPlugin\MidnightHRBundle\Repository\:
+        resource: '../../Repository/'
+
+    KimaiPlugin\MidnightHRBundle\Form\:
+        resource: '../../Form/'

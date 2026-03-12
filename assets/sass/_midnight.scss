@@ -1,0 +1,1155 @@
+/*
+ * Midnight Theme for Kimai
+ * Deep space/midnight aesthetic with ocean-teal S&T Properties branding
+ *
+ * Color Palette:
+ * - Body bg: #0a0e1a       - Sidebar bg: #060a14
+ * - Navbar bg: #0d1224     - Card bg: #111827
+ * - Border: #1e293b        - Primary: #0EA5E9
+ * - Secondary: #06B6D4     - Accent: #6366F1
+ * - Text: #e2e8f0          - Text muted: #64748b
+ * - Links: #38BDF8         - Input bg: #1e293b
+ */
+
+@import "midnight-login";
+
+/* ============================================
+   1. CSS Custom Properties — Global Overrides
+   ============================================ */
+
+:root,
+:host,
+[data-bs-theme="light"],
+[data-bs-theme="dark"] {
+  /* Tabler core colors */
+  --tblr-body-bg: #0a0e1a;
+  --tblr-body-color: #e2e8f0;
+  --tblr-bg-surface: #0a0e1a;
+  --tblr-bg-surface-secondary: #111827;
+  --tblr-bg-surface-tertiary: #0f172a;
+  --tblr-bg-forms: #1e293b;
+
+  /* Card */
+  --tblr-card-bg: #111827;
+  --tblr-card-color: #e2e8f0;
+  --tblr-card-border-color: #1e293b;
+  --tblr-card-cap-bg: rgba(15, 23, 42, 0.6);
+
+  /* Borders */
+  --tblr-border-color: #1e293b;
+  --tblr-border-color-translucent: rgba(30, 41, 59, 0.5);
+
+  /* Primary */
+  --tblr-primary: #0EA5E9;
+  --tblr-primary-rgb: 14, 165, 233;
+  --tblr-primary-lt: rgba(14, 165, 233, 0.1);
+  --tblr-primary-fg: #ffffff;
+
+  /* Secondary */
+  --tblr-secondary: #64748b;
+  --tblr-secondary-rgb: 100, 116, 139;
+  --tblr-secondary-lt: rgba(100, 116, 139, 0.1);
+
+  /* Success */
+  --tblr-success: #10B981;
+  --tblr-success-rgb: 16, 185, 129;
+  --tblr-success-lt: rgba(16, 185, 129, 0.1);
+
+  /* Warning */
+  --tblr-warning: #F59E0B;
+  --tblr-warning-rgb: 245, 158, 11;
+  --tblr-warning-lt: rgba(245, 158, 11, 0.1);
+
+  /* Danger */
+  --tblr-danger: #EF4444;
+  --tblr-danger-rgb: 239, 68, 68;
+  --tblr-danger-lt: rgba(239, 68, 68, 0.1);
+
+  /* Info / Teal */
+  --tblr-info: #06B6D4;
+  --tblr-info-rgb: 6, 182, 212;
+  --tblr-info-lt: rgba(6, 182, 212, 0.1);
+
+  /* Purple / Accent */
+  --tblr-purple: #6366F1;
+  --tblr-purple-rgb: 99, 102, 241;
+  --tblr-purple-lt: rgba(99, 102, 241, 0.1);
+
+  /* Links */
+  --tblr-link-color: #38BDF8;
+  --tblr-link-color-rgb: 56, 189, 248;
+  --tblr-link-hover-color: #7DD3FC;
+  --tblr-link-hover-color-rgb: 125, 211, 252;
+
+  /* Text */
+  --tblr-muted: #64748b;
+  --tblr-body-text: #e2e8f0;
+
+  /* Shadows */
+  --tblr-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --tblr-box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --tblr-box-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --tblr-box-shadow-input: none;
+
+  /* Navbar */
+  --tblr-navbar-bg: #0d1224;
+  --tblr-navbar-border-color: #1e293b;
+  --tblr-navbar-color: #94a3b8;
+  --tblr-navbar-active-color: #e2e8f0;
+  --tblr-navbar-brand-color: #e2e8f0;
+
+  /* Dropdown */
+  --tblr-dropdown-bg: #111827;
+  --tblr-dropdown-border-color: #1e293b;
+  --tblr-dropdown-color: #e2e8f0;
+  --tblr-dropdown-link-color: #e2e8f0;
+  --tblr-dropdown-link-hover-bg: #1e293b;
+  --tblr-dropdown-link-hover-color: #38BDF8;
+  --tblr-dropdown-link-active-bg: rgba(14, 165, 233, 0.15);
+  --tblr-dropdown-link-active-color: #0EA5E9;
+  --tblr-dropdown-divider-bg: #1e293b;
+
+  /* Modal */
+  --tblr-modal-bg: #111827;
+  --tblr-modal-color: #e2e8f0;
+  --tblr-modal-border-color: #1e293b;
+  --tblr-modal-header-border-color: #1e293b;
+  --tblr-modal-footer-border-color: #1e293b;
+
+  /* Tables */
+  --tblr-table-bg: transparent;
+  --tblr-table-color: #e2e8f0;
+  --tblr-table-border-color: #1e293b;
+  --tblr-table-striped-bg: #0f172a;
+  --tblr-table-hover-bg: rgba(14, 165, 233, 0.05);
+  --tblr-table-active-bg: rgba(14, 165, 233, 0.1);
+
+  /* List group */
+  --tblr-list-group-bg: #111827;
+  --tblr-list-group-color: #e2e8f0;
+  --tblr-list-group-border-color: #1e293b;
+  --tblr-list-group-hover-bg: #1e293b;
+  --tblr-list-group-action-hover-color: #38BDF8;
+  --tblr-list-group-action-active-bg: rgba(14, 165, 233, 0.1);
+
+  /* Accordion */
+  --tblr-accordion-bg: #111827;
+  --tblr-accordion-color: #e2e8f0;
+  --tblr-accordion-border-color: #1e293b;
+  --tblr-accordion-btn-bg: #111827;
+  --tblr-accordion-btn-color: #e2e8f0;
+  --tblr-accordion-active-bg: rgba(14, 165, 233, 0.08);
+  --tblr-accordion-active-color: #0EA5E9;
+
+  /* Toast / Offcanvas */
+  --tblr-toast-bg: #111827;
+  --tblr-toast-color: #e2e8f0;
+  --tblr-toast-border-color: #1e293b;
+  --tblr-offcanvas-bg: #111827;
+  --tblr-offcanvas-color: #e2e8f0;
+  --tblr-offcanvas-border-color: #1e293b;
+
+  /* Popover / Tooltip */
+  --tblr-popover-bg: #1e293b;
+  --tblr-popover-border-color: #334155;
+  --tblr-popover-body-color: #e2e8f0;
+  --tblr-popover-header-bg: #0f172a;
+  --tblr-popover-header-color: #e2e8f0;
+  --tblr-tooltip-bg: #1e293b;
+  --tblr-tooltip-color: #e2e8f0;
+
+  /* Pagination */
+  --tblr-pagination-bg: #111827;
+  --tblr-pagination-color: #e2e8f0;
+  --tblr-pagination-border-color: #1e293b;
+  --tblr-pagination-hover-bg: #1e293b;
+  --tblr-pagination-hover-color: #38BDF8;
+  --tblr-pagination-hover-border-color: #334155;
+  --tblr-pagination-active-bg: #0EA5E9;
+  --tblr-pagination-active-color: #fff;
+  --tblr-pagination-active-border-color: #0EA5E9;
+  --tblr-pagination-disabled-bg: #0f172a;
+  --tblr-pagination-disabled-color: #475569;
+
+  /* Breadcrumb */
+  --tblr-breadcrumb-divider-color: #475569;
+
+  /* Close button */
+  --tblr-btn-close-color: #94a3b8;
+
+  /* Code */
+  --tblr-code-color: #06B6D4;
+  --tblr-code-bg: rgba(6, 182, 212, 0.1);
+
+  /* Badge */
+  --tblr-badge-font-weight: 500;
+
+  /* Progress */
+  --tblr-progress-bg: #1e293b;
+
+  /* Gray scale overrides */
+  --tblr-gray-50: #1e293b;
+  --tblr-gray-100: #1e293b;
+  --tblr-gray-200: #334155;
+  --tblr-gray-300: #475569;
+  --tblr-gray-400: #64748b;
+  --tblr-gray-500: #94a3b8;
+  --tblr-gray-600: #cbd5e1;
+  --tblr-gray-700: #e2e8f0;
+  --tblr-gray-800: #f1f5f9;
+  --tblr-gray-900: #f8fafc;
+}
+
+
+/* ============================================
+   2. Body & Page Wrapper
+   ============================================ */
+
+body {
+  background-color: #0a0e1a !important;
+  color: #e2e8f0 !important;
+}
+
+.page-wrapper,
+.page-body {
+  background-color: #0a0e1a;
+}
+
+
+/* ============================================
+   3. Sidebar / Left Navigation
+   ============================================ */
+
+.navbar-vertical,
+.navbar-vertical.navbar-expand-lg {
+  background-color: #060a14 !important;
+  border-right: 1px solid #1e293b !important;
+
+  .navbar-nav {
+    .nav-link {
+      color: #94a3b8 !important;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #e2e8f0 !important;
+        background-color: rgba(14, 165, 233, 0.08) !important;
+      }
+
+      &.active,
+      &.show {
+        color: #0EA5E9 !important;
+        background-color: rgba(14, 165, 233, 0.12) !important;
+        box-shadow: inset 3px 0 0 #0EA5E9;
+      }
+
+      .nav-link-icon {
+        color: #64748b;
+      }
+    }
+
+    .nav-link.active .nav-link-icon,
+    .nav-link.show .nav-link-icon {
+      color: #0EA5E9 !important;
+    }
+  }
+
+  .navbar-brand {
+    color: #e2e8f0 !important;
+    border-bottom: 1px solid #1e293b;
+  }
+}
+
+/* Sidebar submenus */
+.navbar-vertical .navbar-nav .dropdown-menu {
+  background-color: #060a14 !important;
+  border: none !important;
+}
+
+
+/* ============================================
+   4. Top Navbar
+   ============================================ */
+
+.navbar:not(.navbar-vertical) {
+  background-color: #0d1224 !important;
+  border-bottom: 1px solid #1e293b !important;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3) !important;
+
+  .nav-link {
+    color: #94a3b8 !important;
+
+    &:hover {
+      color: #e2e8f0 !important;
+    }
+
+    &.active {
+      color: #0EA5E9 !important;
+    }
+  }
+
+  .page-title {
+    color: #e2e8f0 !important;
+  }
+}
+
+
+/* ============================================
+   5. Cards
+   ============================================ */
+
+.card {
+  background-color: #111827 !important;
+  border: 1px solid #1e293b !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+
+  .card-header {
+    background-color: rgba(15, 23, 42, 0.5) !important;
+    border-bottom-color: #1e293b !important;
+    color: #e2e8f0 !important;
+  }
+
+  .card-title {
+    color: #e2e8f0 !important;
+  }
+
+  .card-footer {
+    background-color: rgba(15, 23, 42, 0.3) !important;
+    border-top-color: #1e293b !important;
+  }
+
+  .card-body {
+    color: #e2e8f0;
+  }
+}
+
+.card-stacked::after {
+  background: #111827 !important;
+  border: 1px solid #1e293b !important;
+}
+
+
+/* ============================================
+   6. Forms & Inputs
+   ============================================ */
+
+.form-control,
+.form-select {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+
+  &:focus {
+    background-color: #1e293b !important;
+    border-color: #0EA5E9 !important;
+    box-shadow: 0 0 0 0.25rem rgba(14, 165, 233, 0.15) !important;
+    color: #e2e8f0 !important;
+  }
+
+  &::placeholder {
+    color: #64748b !important;
+  }
+
+  &:disabled,
+  &[readonly] {
+    background-color: #0f172a !important;
+    color: #64748b !important;
+  }
+}
+
+.input-group-text {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #94a3b8 !important;
+}
+
+.form-label {
+  color: #94a3b8 !important;
+}
+
+.form-check-input {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+
+  &:checked {
+    background-color: #0EA5E9 !important;
+    border-color: #0EA5E9 !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgba(14, 165, 233, 0.15) !important;
+  }
+}
+
+.form-switch .form-check-input {
+  background-color: #334155 !important;
+
+  &:checked {
+    background-color: #0EA5E9 !important;
+  }
+}
+
+/* Tom Select (autocomplete) */
+.ts-control,
+.ts-wrapper .ts-control {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.ts-dropdown {
+  background-color: #111827 !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+
+  .active {
+    background-color: rgba(14, 165, 233, 0.15) !important;
+    color: #0EA5E9 !important;
+  }
+
+  .option {
+    color: #e2e8f0 !important;
+
+    &:hover {
+      background-color: #1e293b !important;
+    }
+  }
+
+  .optgroup-header {
+    color: #64748b !important;
+    background-color: #0f172a !important;
+  }
+}
+
+.ts-wrapper .ts-control .item {
+  background-color: rgba(14, 165, 233, 0.15) !important;
+  color: #0EA5E9 !important;
+  border: 1px solid rgba(14, 165, 233, 0.3) !important;
+}
+
+
+/* ============================================
+   7. Buttons
+   ============================================ */
+
+.btn-primary {
+  background-color: #0EA5E9 !important;
+  border-color: #0EA5E9 !important;
+  color: #fff !important;
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.25);
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: #38BDF8 !important;
+    border-color: #38BDF8 !important;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.4) !important;
+  }
+}
+
+.btn-secondary {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+
+  &:hover {
+    background-color: #334155 !important;
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+  }
+}
+
+.btn-success {
+  background-color: #10B981 !important;
+  border-color: #10B981 !important;
+}
+
+.btn-warning {
+  background-color: #F59E0B !important;
+  border-color: #F59E0B !important;
+}
+
+.btn-danger {
+  background-color: #EF4444 !important;
+  border-color: #EF4444 !important;
+}
+
+.btn-info {
+  background-color: #06B6D4 !important;
+  border-color: #06B6D4 !important;
+  color: #fff !important;
+}
+
+.btn-outline-primary {
+  color: #0EA5E9 !important;
+  border-color: #0EA5E9 !important;
+
+  &:hover {
+    background-color: #0EA5E9 !important;
+    color: #fff !important;
+    box-shadow: 0 0 16px rgba(14, 165, 233, 0.3);
+  }
+}
+
+.btn-outline-secondary {
+  color: #94a3b8 !important;
+  border-color: #334155 !important;
+
+  &:hover {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+  }
+}
+
+.btn-ghost-primary {
+  color: #0EA5E9 !important;
+
+  &:hover {
+    background-color: rgba(14, 165, 233, 0.1) !important;
+  }
+}
+
+/* Icon-only buttons / action buttons */
+.btn-icon {
+  color: #94a3b8 !important;
+
+  &:hover {
+    color: #e2e8f0 !important;
+    background-color: rgba(14, 165, 233, 0.1) !important;
+  }
+}
+
+
+/* ============================================
+   8. Tables
+   ============================================ */
+
+.table {
+  color: #e2e8f0 !important;
+  --tblr-table-bg: transparent;
+
+  thead th {
+    background-color: #0f172a !important;
+    color: #94a3b8 !important;
+    border-bottom-color: #1e293b !important;
+    font-weight: 600;
+  }
+
+  tbody tr {
+    border-bottom-color: #1e293b !important;
+
+    &:nth-child(odd) {
+      background-color: #0f172a;
+    }
+
+    &:nth-child(even) {
+      background-color: #111827;
+    }
+
+    &:hover {
+      background-color: rgba(14, 165, 233, 0.06) !important;
+    }
+  }
+
+  td, th {
+    border-color: #1e293b !important;
+  }
+}
+
+.table-responsive {
+  border-color: #1e293b;
+}
+
+thead.sticky-top th {
+  background-color: #0f172a !important;
+}
+
+
+/* ============================================
+   9. Dropdowns
+   ============================================ */
+
+.dropdown-menu {
+  background-color: #111827 !important;
+  border: 1px solid #1e293b !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
+
+  .dropdown-item {
+    color: #e2e8f0 !important;
+
+    &:hover,
+    &:focus {
+      background-color: #1e293b !important;
+      color: #38BDF8 !important;
+    }
+
+    &.active,
+    &:active {
+      background-color: rgba(14, 165, 233, 0.15) !important;
+      color: #0EA5E9 !important;
+    }
+  }
+
+  .dropdown-header {
+    color: #64748b !important;
+  }
+
+  .dropdown-divider {
+    border-top-color: #1e293b !important;
+  }
+}
+
+.dropdown-menu-card {
+  .card {
+    box-shadow: none !important;
+  }
+}
+
+
+/* ============================================
+   10. Modals
+   ============================================ */
+
+.modal-content {
+  background-color: #111827 !important;
+  border: 1px solid #1e293b !important;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5) !important;
+  color: #e2e8f0 !important;
+}
+
+.modal-header {
+  border-bottom-color: #1e293b !important;
+
+  .modal-title {
+    color: #e2e8f0 !important;
+  }
+
+  .btn-close {
+    filter: invert(1) brightness(0.7);
+  }
+}
+
+.modal-footer {
+  border-top-color: #1e293b !important;
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+/* ============================================
+   11. Badges & Tags
+   ============================================ */
+
+.badge {
+  font-weight: 500;
+}
+
+.badge.bg-primary { background-color: #0EA5E9 !important; }
+.badge.bg-secondary { background-color: #334155 !important; color: #e2e8f0 !important; }
+.badge.bg-success { background-color: #10B981 !important; }
+.badge.bg-warning { background-color: #F59E0B !important; }
+.badge.bg-danger { background-color: #EF4444 !important; }
+.badge.bg-info { background-color: #06B6D4 !important; }
+
+.tag {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+  border-color: #334155 !important;
+}
+
+
+/* ============================================
+   12. Alerts
+   ============================================ */
+
+.alert {
+  border-width: 1px;
+
+  &.alert-primary {
+    background-color: rgba(14, 165, 233, 0.1) !important;
+    border-color: rgba(14, 165, 233, 0.3) !important;
+    color: #38BDF8 !important;
+  }
+
+  &.alert-success {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #34D399 !important;
+  }
+
+  &.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: #FBBF24 !important;
+  }
+
+  &.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+    color: #F87171 !important;
+  }
+
+  &.alert-info {
+    background-color: rgba(6, 182, 212, 0.1) !important;
+    border-color: rgba(6, 182, 212, 0.3) !important;
+    color: #22D3EE !important;
+  }
+}
+
+
+/* ============================================
+   13. Nav Tabs & Pills
+   ============================================ */
+
+.nav-tabs {
+  border-bottom-color: #1e293b !important;
+
+  .nav-link {
+    color: #94a3b8 !important;
+
+    &:hover {
+      border-color: #334155 #334155 #1e293b !important;
+      color: #e2e8f0 !important;
+    }
+
+    &.active {
+      background-color: #111827 !important;
+      border-color: #1e293b #1e293b #111827 !important;
+      color: #0EA5E9 !important;
+    }
+  }
+}
+
+.nav-pills .nav-link {
+  color: #94a3b8 !important;
+
+  &:hover {
+    background-color: rgba(14, 165, 233, 0.08) !important;
+    color: #e2e8f0 !important;
+  }
+
+  &.active {
+    background-color: #0EA5E9 !important;
+    color: #fff !important;
+    border-color: #0EA5E9 !important;
+  }
+}
+
+
+/* ============================================
+   14. Pagination
+   ============================================ */
+
+.page-item {
+  .page-link {
+    background-color: #111827;
+    border-color: #1e293b;
+    color: #e2e8f0;
+
+    &:hover {
+      background-color: #1e293b;
+      border-color: #334155;
+      color: #38BDF8;
+    }
+  }
+
+  &.active .page-link {
+    background-color: #0EA5E9;
+    border-color: #0EA5E9;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
+  }
+
+  &.disabled .page-link {
+    background-color: #0f172a;
+    border-color: #1e293b;
+    color: #475569;
+  }
+}
+
+
+/* ============================================
+   15. Progress Bars
+   ============================================ */
+
+.progress {
+  background-color: #1e293b !important;
+}
+
+.progress-bar {
+  background-color: #0EA5E9;
+}
+
+
+/* ============================================
+   16. Breadcrumbs
+   ============================================ */
+
+.breadcrumb {
+  .breadcrumb-item {
+    color: #64748b;
+
+    a {
+      color: #38BDF8;
+      &:hover { color: #7DD3FC; }
+    }
+
+    &.active {
+      color: #94a3b8;
+    }
+
+    + .breadcrumb-item::before {
+      color: #475569;
+    }
+  }
+}
+
+
+/* ============================================
+   17. List Groups
+   ============================================ */
+
+.list-group-item {
+  background-color: #111827 !important;
+  border-color: #1e293b !important;
+  color: #e2e8f0 !important;
+
+  &:hover {
+    background-color: #1e293b !important;
+  }
+
+  &.active {
+    background-color: rgba(14, 165, 233, 0.12) !important;
+    border-color: rgba(14, 165, 233, 0.3) !important;
+    color: #0EA5E9 !important;
+  }
+
+  &.list-group-item-action:hover {
+    color: #38BDF8 !important;
+  }
+}
+
+
+/* ============================================
+   18. Typography Overrides
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #e2e8f0 !important;
+}
+
+.text-body {
+  color: #e2e8f0 !important;
+}
+
+.text-muted {
+  color: #64748b !important;
+}
+
+.text-secondary {
+  color: #94a3b8 !important;
+}
+
+a {
+  color: #38BDF8;
+
+  &:hover {
+    color: #7DD3FC;
+  }
+}
+
+hr {
+  border-color: #1e293b;
+  opacity: 0.5;
+}
+
+code {
+  color: #06B6D4;
+  background-color: rgba(6, 182, 212, 0.1);
+}
+
+pre {
+  background-color: #0f172a !important;
+  border: 1px solid #1e293b;
+  color: #e2e8f0;
+}
+
+
+/* ============================================
+   19. Calendar (Kimai-specific)
+   ============================================ */
+
+.fc {
+  .fc-toolbar-title {
+    color: #e2e8f0 !important;
+  }
+
+  .fc-col-header-cell {
+    background-color: #0f172a !important;
+    color: #94a3b8 !important;
+  }
+
+  .fc-daygrid-day {
+    background-color: #111827;
+    border-color: #1e293b !important;
+  }
+
+  .fc-day-today {
+    background-color: rgba(14, 165, 233, 0.08) !important;
+  }
+
+  .fc-button-primary {
+    background-color: #0EA5E9 !important;
+    border-color: #0EA5E9 !important;
+
+    &:not(:disabled).fc-button-active {
+      background-color: #0284C7 !important;
+      border-color: #0284C7 !important;
+    }
+  }
+
+  .fc-timegrid-slot {
+    border-color: #1e293b !important;
+  }
+
+  .fc-scrollgrid {
+    border-color: #1e293b !important;
+  }
+}
+
+
+/* ============================================
+   20. Scrollbar Styling
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+
+  &:hover {
+    background: #475569;
+  }
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #0a0e1a;
+}
+
+
+/* ============================================
+   21. Kimai-Specific Overrides
+   ============================================ */
+
+/* Timer / Ticktac running timer */
+.ticktac,
+.recording {
+  .card {
+    border-color: rgba(16, 185, 129, 0.4) !important;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.15) !important;
+  }
+}
+
+/* Recent activities */
+.recent-activities .list-group-item {
+  border-left: 3px solid transparent;
+
+  &:hover {
+    border-left-color: #0EA5E9;
+  }
+}
+
+/* Dashboard stats widgets */
+.stats-widget {
+  .card {
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.15) !important;
+    }
+  }
+}
+
+/* Action toolbar */
+.page-actions .btn,
+#export-buttons .btn {
+  &:not(.btn-primary):not(.btn-success):not(.btn-danger):not(.btn-warning) {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+
+    &:hover {
+      background-color: #334155;
+      border-color: #475569;
+    }
+  }
+}
+
+/* User shortcuts in navbar */
+.user-shortcuts {
+  .user-shortcuts-icon {
+    background-color: #1e293b !important;
+    color: #94a3b8 !important;
+
+    &:hover {
+      background-color: rgba(14, 165, 233, 0.15) !important;
+      color: #0EA5E9 !important;
+    }
+  }
+}
+
+/* Loading spinner */
+.loading-spinner {
+  color: #0EA5E9;
+}
+
+/* Litepicker (date picker) */
+.litepicker {
+  .container__months {
+    background-color: #111827 !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .month-item-header {
+    color: #e2e8f0 !important;
+  }
+
+  .day-item {
+    color: #e2e8f0 !important;
+
+    &:hover {
+      background-color: rgba(14, 165, 233, 0.15) !important;
+      color: #38BDF8 !important;
+    }
+
+    &.is-today {
+      color: #0EA5E9 !important;
+      font-weight: bold;
+    }
+
+    &.is-start-date,
+    &.is-end-date {
+      background-color: #0EA5E9 !important;
+      color: #fff !important;
+    }
+
+    &.is-in-range {
+      background-color: rgba(14, 165, 233, 0.1) !important;
+    }
+  }
+
+  .month-item-weekdays-row > div {
+    color: #64748b !important;
+  }
+
+  .button-previous-month,
+  .button-next-month {
+    color: #94a3b8 !important;
+
+    &:hover {
+      color: #e2e8f0 !important;
+    }
+  }
+}
+
+/* Selection highlight for dark mode */
+::selection,
+.text-selected {
+  background-color: #0EA5E9 !important;
+  color: #fff !important;
+}
+
+
+/* ============================================
+   22. Glow Effects — Active Nav & Primary Buttons
+   ============================================ */
+
+@keyframes navGlow {
+  0%, 100% { box-shadow: inset 3px 0 0 #0EA5E9, 0 0 8px rgba(14, 165, 233, 0.1); }
+  50% { box-shadow: inset 3px 0 0 #38BDF8, 0 0 14px rgba(14, 165, 233, 0.2); }
+}
+
+.navbar-vertical .navbar-nav .nav-link.active {
+  animation: navGlow 3s ease-in-out infinite;
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+  box-shadow: 0 0 24px rgba(14, 165, 233, 0.4) !important;
+}
+
+
+/* ============================================
+   23. Misc Overrides
+   ============================================ */
+
+/* Empty state */
+.empty {
+  color: #64748b;
+
+  .empty-title {
+    color: #94a3b8 !important;
+  }
+
+  .empty-subtitle {
+    color: #64748b !important;
+  }
+}
+
+/* Avatar placeholder */
+.avatar {
+  background-color: #1e293b;
+  color: #94a3b8;
+}
+
+/* Ribbons */
+.ribbon {
+  &.bg-primary { background-color: #0EA5E9 !important; }
+  &.bg-success { background-color: #10B981 !important; }
+  &.bg-warning { background-color: #F59E0B !important; }
+  &.bg-danger { background-color: #EF4444 !important; }
+}
+
+/* Footer */
+.footer {
+  background-color: #060a14 !important;
+  border-top: 1px solid #1e293b !important;
+  color: #64748b !important;
+
+  a {
+    color: #38BDF8 !important;
+  }
+}
+
+/* Page header */
+.page-header {
+  border-bottom-color: #1e293b;
+}
+
+/* Subheader */
+.subheader {
+  color: #64748b !important;
+}
+
+/* Steps / Stepper */
+.steps .step-item {
+  color: #64748b;
+
+  &.active {
+    color: #0EA5E9;
+  }
+}

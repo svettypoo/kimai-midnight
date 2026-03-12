@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}
+	{{ 'Easy Backup'|trans }}
+{% endblock %}
+{% block page_subtitle %}
+	{{ 'easy_backup.subtitle'|trans }}
+{% endblock %}
+
+{% block main %}
+
+    {% set statusOpts = {collapsed: true, boxtype: 'success'} %}
+    {% for status_item in _status %}
+        {% if status_item.status is same as (false) %}
+            {% set statusOpts = {boxtype: 'danger'} %}
+        {% endif %}
+    {% endfor %}
+    {% embed '@theme/embeds/card.html.twig' with statusOpts %}
+        {% block box_title %}{{ 'View status checks'|trans }}{% endblock %}
+        {% block box_body %}
+            <p>
+                If you see a warning icon <i class="{{ 'warning'|icon(false) }} text-red"></i> in the list below, you should talk to your administrator.
+                A path might be not readable/writable and Kimai might not work as expected.
+            </p>
+            <table class="table">
+                {% for status_item in _status %}
+                    <tr>
+                        <th style="width:40%">{{ status_item.desc }}</th>
+                        <td>
+                            {% if status_item.status is same as (false) %}
+                                <i class="{{ 'warning'|icon(false) }} text-red"></i>
+
+                            {% elseif status_item.status is same as (true) %}
+                                <i class="{{ 'success'|icon(true) }} text-green"></i>
+
+							{% else %}
+								<i class="{{ 'success'|icon(false) }} text-blue"></i>
+                            {% endif %}
+							{{ status_item.result }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endblock %}
+    {% endembed %}
+
+    {% set logOpts = {collapsed: true} %}
+    {% embed '@theme/embeds/card.html.twig' with logOpts %}
+        {% import "macros/widgets.html.twig" as widgets %}
+        {% block box_title %}Latest log{% endblock %}
+        {% block box_body %}
+            <pre>{{- log -}}</pre>
+		{% endblock %}
+    {% endembed %}
+
+	<div class="box box-secondary data_table">
+		<div class="box-header">
+			<a href="{{ path('create_backup') }}">
+				<button class="btn btn-success" {% if '0' in _status %} disabled {% endif %}>
+					<i class="fas fa-hdd"></i> &nbsp;
+					{{ 'Create Backup'|trans }}</button>
+			</a>
+		</div>
+		<div class="box-body">
+			<table class="table dataTable table-striped table-hover">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">{{ 'Name'|trans }}</th>
+						<th scope="col">{{ 'Size'|trans }}</th>
+						<th scope="col">{{ 'Delete'|trans }}</th>
+						<th scope="col">{{ 'Restore'|trans }}</th>
+						<th scope="col">{{ 'Download'|trans }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if existingBackups is defined %}
+						{% for item in existingBackups %}
+							<tr>
+								<td>{{ existingBackups|length - loop.index + 1 }}</td>
+								<td>{{ item.name }}</td>
+
+								<td>{{ item.size|number_format(3) }}MB</td>
+
+								<td>
+									<a href="{{ path('delete', {'backupFilename': item.name}) }}" class="confirmation-link btn btn-danger" data-question="confirm.delete" data-msg-error="action.delete.error" data-msg-success="action.delete.success">
+										<i class="fas fa-trash"></i> &nbsp;
+										{{ 'Delete'|trans }}
+									</a>
+								</td>
+
+								<td>
+									<a href="{{ path('restore', {'backupFilename': item.name}) }}" class="confirmation-link btn btn-caution" data-question="confirm.restore" data-msg-error="action.restore.error" data-msg-success="action.restore.success">
+										<i class="fas fa-undo"></i> &nbsp;
+										{{ 'Restore'|trans }}
+									</a>
+								</td>
+
+								<td>
+									<a href="{{ path('download', {'backupFilename': item.name}) }}" class="btn btn-info">
+										<i class="fas fa-download"></i> &nbsp;
+										{{ 'Download'|trans }}
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					{% endif %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

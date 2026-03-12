@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Audit Trail{% endblock %}
+
+{% block main %}
+<style>
+    .audit-wrap {
+        background: #0f172a;
+        border-radius: 12px;
+        padding: 24px;
+        color: #e2e8f0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .audit-wrap h2 {
+        color: #f1f5f9;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+    .audit-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 24px;
+        align-items: flex-end;
+    }
+    .audit-filters .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .audit-filters label {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .audit-filters input,
+    .audit-filters select {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #e2e8f0;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        min-width: 140px;
+    }
+    .audit-filters input:focus,
+    .audit-filters select:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    }
+    .audit-filters button {
+        background: #6366f1;
+        color: #fff;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        font-weight: 500;
+    }
+    .audit-filters button:hover {
+        background: #4f46e5;
+    }
+    .audit-table-wrap {
+        overflow-x: auto;
+    }
+    .audit-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    .audit-table thead th {
+        background: #1e293b;
+        color: #94a3b8;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 10px 14px;
+        text-align: left;
+        border-bottom: 2px solid #334155;
+        position: sticky;
+        top: 0;
+        white-space: nowrap;
+    }
+    .audit-table thead th:first-child {
+        border-radius: 8px 0 0 0;
+    }
+    .audit-table thead th:last-child {
+        border-radius: 0 8px 0 0;
+    }
+    .audit-table tbody tr {
+        transition: background 0.15s;
+    }
+    .audit-table tbody tr:hover {
+        background: #1e293b;
+    }
+    .audit-table tbody td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #1e293b;
+        font-size: 0.875rem;
+        vertical-align: top;
+        max-width: 280px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    .badge-create { background: #064e3b; color: #6ee7b7; }
+    .badge-update { background: #1e3a5f; color: #7dd3fc; }
+    .badge-delete { background: #7f1d1d; color: #fca5a5; }
+    .audit-empty {
+        text-align: center;
+        color: #64748b;
+        padding: 40px 0;
+        font-size: 1rem;
+    }
+    .value-cell {
+        font-family: 'Fira Code', 'Consolas', monospace;
+        font-size: 0.8rem;
+        color: #cbd5e1;
+        word-break: break-all;
+    }
+    .value-old { color: #f87171; }
+    .value-new { color: #4ade80; }
+</style>
+
+<div class="audit-wrap">
+    <h2>Audit Trail</h2>
+
+    <form method="get" action="{{ path('midnight_audit_index') }}" class="audit-filters">
+        <div class="filter-group">
+            <label for="entity_type">Entity Type</label>
+            <select name="entity_type" id="entity_type">
+                <option value="">All</option>
+                {% for type in entity_types %}
+                    <option value="{{ type }}" {% if filter_entity_type == type %}selected{% endif %}>{{ type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="user_id">User ID</label>
+            <input type="number" name="user_id" id="user_id" value="{{ filter_user_id }}" placeholder="Any user">
+        </div>
+
+        <div class="filter-group">
+            <label for="date_from">From</label>
+            <input type="date" name="date_from" id="date_from" value="{{ filter_date_from }}">
+        </div>
+
+        <div class="filter-group">
+            <label for="date_to">To</label>
+            <input type="date" name="date_to" id="date_to" value="{{ filter_date_to }}">
+        </div>
+
+        <div class="filter-group">
+            <label for="limit">Limit</label>
+            <input type="number" name="limit" id="limit" value="{{ filter_limit }}" min="1" max="500" style="width:80px;">
+        </div>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <div class="audit-table-wrap">
+        {% if logs|length > 0 %}
+        <table class="audit-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Timestamp</th>
+                    <th>Entity</th>
+                    <th>Entity ID</th>
+                    <th>Action</th>
+                    <th>Field</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td style="white-space:nowrap;">{{ log.timestamp|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ log.entityType }}</td>
+                    <td>{{ log.entityId }}</td>
+                    <td>
+                        <span class="badge badge-{{ log.action }}">{{ log.action }}</span>
+                    </td>
+                    <td>{{ log.fieldName ?? '-' }}</td>
+                    <td class="value-cell value-old">{{ log.oldValue ?? '-' }}</td>
+                    <td class="value-cell value-new">{{ log.newValue ?? '-' }}</td>
+                    <td>{{ log.username ?? ('UID:' ~ (log.userId ?? '?')) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="audit-empty">No audit log entries found.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

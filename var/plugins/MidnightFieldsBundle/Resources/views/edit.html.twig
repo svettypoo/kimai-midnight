@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}{{ is_new ? 'Create Custom Field' : 'Edit Custom Field: ' ~ definition.name }}{% endblock %}
+
+{% block page_actions %}
+    <a href="{{ path('midnight_fields_index') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    {{ is_new ? 'New Custom Field Definition' : 'Edit: ' ~ definition.name }}
+                </h3>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+
+                <div class="mb-3">
+                    {{ form_label(form.entity_type) }}
+                    {{ form_widget(form.entity_type, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.entity_type) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.name) }}
+                    <div class="form-text">Human-readable label shown on forms.</div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.field_key) }}
+                    {{ form_widget(form.field_key, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.field_key) }}
+                    <div class="form-text">Unique machine name. Use lowercase, numbers, underscores only.</div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.field_type) }}
+                    {{ form_widget(form.field_type, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.field_type) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.options) }}
+                    {{ form_widget(form.options, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.options) }}
+                    {% if form.options.vars.help is defined and form.options.vars.help %}
+                        <div class="form-text">{{ form.options.vars.help }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.position) }}
+                    {{ form_widget(form.position, {'attr': {'class': 'form-control', 'style': 'width: 100px;'}}) }}
+                    {{ form_errors(form.position) }}
+                    <div class="form-text">Lower numbers appear first.</div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form_widget(form.required, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(form.required, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form_widget(form.visible, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(form.visible, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                </div>
+
+                <div class="card-footer text-end">
+                    <a href="{{ path('midnight_fields_index') }}" class="btn btn-secondary me-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> {{ is_new ? 'Create' : 'Save' }}
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

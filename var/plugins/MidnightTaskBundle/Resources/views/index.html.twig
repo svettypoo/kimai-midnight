@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Tasks{% endblock %}
+{% block page_subtitle %}Kanban board — plan and track work{% endblock %}
+
+{% block main %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        {% if overdue_count > 0 %}
+            <span class="badge bg-danger">{{ overdue_count }} overdue</span>
+        {% endif %}
+    </div>
+    <a href="{{ path('task_create') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> New Task
+    </a>
+</div>
+
+<div class="row">
+    {% for status in statuses %}
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    {% if status == 'todo' %}
+                        <i class="fas fa-clipboard-list text-secondary"></i> To Do
+                    {% elseif status == 'in_progress' %}
+                        <i class="fas fa-spinner text-primary"></i> In Progress
+                    {% elseif status == 'done' %}
+                        <i class="fas fa-check-circle text-success"></i> Done
+                    {% elseif status == 'blocked' %}
+                        <i class="fas fa-ban text-danger"></i> Blocked
+                    {% endif %}
+                    <span class="badge bg-secondary ms-1">{{ grouped[status]|length }}</span>
+                </h3>
+            </div>
+            <div class="card-body p-2" style="min-height: 200px; max-height: 600px; overflow-y: auto;">
+                {% for task in grouped[status] %}
+                <div class="card mb-2 {% if task.isOverdue() %}border-danger{% endif %}">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <strong class="{% if task.isOverdue() %}text-danger{% endif %}">
+                                {{ task.title }}
+                            </strong>
+                            <span class="badge {% if task.priority == 'urgent' %}bg-danger{% elseif task.priority == 'high' %}bg-warning{% elseif task.priority == 'medium' %}bg-info{% else %}bg-secondary{% endif %}">
+                                {{ task.priority }}
+                            </span>
+                        </div>
+
+                        {% if task.description %}
+                            <p class="text-muted small mb-1">{{ task.description|length > 60 ? task.description|slice(0, 60) ~ '...' : task.description }}</p>
+                        {% endif %}
+
+                        <div class="small text-muted mb-1">
+                            {% if task.assignee %}
+                                <i class="fas fa-user"></i> {{ task.assignee.displayName }}
+                            {% endif %}
+                            {% if task.project %}
+                                <i class="fas fa-folder ms-1"></i> {{ task.project.name }}
+                            {% endif %}
+                        </div>
+
+                        {% if task.dueDate %}
+                            <div class="small {% if task.isOverdue() %}text-danger fw-bold{% else %}text-muted{% endif %}">
+                                <i class="fas fa-calendar"></i> {{ task.dueDate|date('M d, Y') }}
+                            </div>
+                        {% endif %}
+
+                        {% if task.estimatedHours %}
+                            <div class="small text-muted">
+                                <i class="fas fa-clock"></i> {{ task.estimatedHours }}h est.
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-2 d-flex gap-1 flex-wrap">
+                            {% for s in statuses %}
+                                {% if s != status %}
+                                <form action="{{ path('task_toggle_status', {id: task.id, status: s}) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm" title="Move to {{ s }}">
+                                        {% if s == 'todo' %}<i class="fas fa-clipboard-list"></i>
+                                        {% elseif s == 'in_progress' %}<i class="fas fa-play"></i>
+                                        {% elseif s == 'done' %}<i class="fas fa-check"></i>
+                                        {% elseif s == 'blocked' %}<i class="fas fa-ban"></i>
+                                        {% endif %}
+                                    </button>
+                                </form>
+                                {% endif %}
+                            {% endfor %}
+                            <a href="{{ path('task_edit', {id: task.id}) }}" class="btn btn-outline-primary btn-sm" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ path('task_delete', {id: task.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Delete this task?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-inbox fa-2x mb-2 d-block opacity-50"></i>
+                    <small>No tasks</small>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

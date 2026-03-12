@@ -19,7 +19,7 @@ var/templates/
 /.pnp.*
 
 # for keeping empty directories
-/config/packages/local.yaml
+# /config/packages/local.yaml — DISABLED: we track our custom config
 /config/bundles-local.php
 /var/dev/*
 /var/data/*
@@ -29,7 +29,8 @@ var/templates/
 /var/log/*
 /var/sessions/*
 /var/packages/*
-/var/plugins*
+# /var/plugins* — DISABLED: we track plugins in git for Railway deploy
+!/var/plugins/
 /var/plugins/*/*.disabled
 
 ###> symfony/framework-bundle ###

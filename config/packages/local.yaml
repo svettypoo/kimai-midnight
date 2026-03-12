@@ -1,0 +1,25 @@
+kimai:
+    timesheet:
+        rounding:
+            default:
+                days: ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+                begin: 1
+                end: 1
+                duration: 0
+                mode: default
+    company:
+        financial_year: january
+    defaults:
+        customer:
+            timezone: America/Edmonton
+            country: CA
+            currency: CAD
+    theme:
+        branding:
+            company: "S&T Properties"
+            mini: "S&T"
+            title: "S&T Timekeeping"
+
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'

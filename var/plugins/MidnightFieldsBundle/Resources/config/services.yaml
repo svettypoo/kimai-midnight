@@ -1,0 +1,20 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\MidnightFieldsBundle\Repository\CustomFieldDefinitionRepository:
+        tags: ['doctrine.repository_service']
+
+    KimaiPlugin\MidnightFieldsBundle\Repository\CustomFieldValueRepository:
+        tags: ['doctrine.repository_service']
+
+    KimaiPlugin\MidnightFieldsBundle\Controller\CustomFieldController:
+        tags: ['controller.service_arguments']
+
+    KimaiPlugin\MidnightFieldsBundle\EventSubscriber\CustomFieldSubscriber:
+        tags: ['kernel.event_subscriber']
+
+    KimaiPlugin\MidnightFieldsBundle\Form\CustomFieldDefinitionType:
+        tags: ['form.type']

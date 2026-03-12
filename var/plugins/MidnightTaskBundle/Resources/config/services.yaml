@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\MidnightTaskBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Resources}'
+
+    KimaiPlugin\MidnightTaskBundle\Repository\TaskRepository:
+        tags: ['doctrine.repository_service']
+
+    KimaiPlugin\MidnightTaskBundle\Controller\TaskController:
+        tags: ['controller.service_arguments']

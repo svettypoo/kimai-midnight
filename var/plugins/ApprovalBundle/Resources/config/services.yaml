@@ -1,0 +1,23 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\ApprovalBundle\:
+        resource: '../../*'
+        exclude:
+            - '../../Entity/'
+            - '../../Migrations/'
+            - '../../Resources/'
+            - '../../Scripts/'
+
+    KimaiPlugin\ApprovalBundle\API\:
+        resource: '../../API'
+        tags: ['controller.service_arguments']
+
+    approval.settings:
+        class: KimaiPlugin\ApprovalBundle\Settings\MetaFieldSettings
+
+    KimaiPlugin\ApprovalBundle\Settings\ApprovalSettingsInterface:
+        alias: 'approval.settings'

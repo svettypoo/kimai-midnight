@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}{{ is_new ? 'Create Task' : 'Edit Task' }}{% endblock %}
+{% block page_subtitle %}{{ is_new ? 'Add a new task' : 'Update task details' }}{% endblock %}
+
+{% block main %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ is_new ? 'New Task' : 'Edit Task #' ~ task.id }}</h3>
+    </div>
+    <div class="card-body">
+        {{ form_start(form, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+
+        <div class="mb-3">
+            {{ form_row(form.title) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.description) }}
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_row(form.status) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.priority) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_row(form.assignee) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.project) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_row(form.estimatedHours) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.dueDate) }}
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('task_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Board
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> {{ is_new ? 'Create' : 'Update' }}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

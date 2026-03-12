@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ isNew ? 'New Absence Request' : 'Edit Absence Request' }}{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-0">
+                <i class="fas fa-{{ isNew ? 'plus-circle' : 'edit' }}"></i>
+                {{ isNew ? 'New Absence Request' : 'Edit Absence Request' }}
+            </h2>
+        </div>
+    </div>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'success' ? 'success' : (label == 'warning' ? 'warning' : 'danger') }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ form_row(form.type) }}
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <div class="form-check mb-3">
+                                {{ form_widget(form.halfDay) }}
+                                {{ form_label(form.halfDay) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ form_row(form.startDate) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.endDate) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_row(form.notes) }}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('hr_absences') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> {{ isNew ? 'Submit Request' : 'Update Request' }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent">
+                    <h6 class="mb-0"><i class="fas fa-info-circle"></i> Absence Types</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <span class="badge bg-primary">Vacation</span>
+                            <small class="text-muted d-block">Planned time off (deducted from allowance)</small>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-danger">Sick Leave</span>
+                            <small class="text-muted d-block">Illness or medical appointments</small>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success">Public Holiday</span>
+                            <small class="text-muted d-block">Statutory holidays</small>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary">Unpaid Leave</span>
+                            <small class="text-muted d-block">Leave without pay</small>
+                        </li>
+                        <li class="mb-0">
+                            <span class="badge bg-info">Other</span>
+                            <small class="text-muted d-block">Compassionate, jury duty, etc.</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

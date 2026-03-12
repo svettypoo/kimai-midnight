@@ -1,0 +1,14 @@
+controllers:
+    resource: '@ApprovalBundle/Controller/'
+    type: attribute
+    prefix: /{_locale}
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+
+api_controllers:
+    resource: '@ApprovalBundle/API/'
+    type: attribute
+    prefix: '/api'

@@ -1,19 +1,20 @@
 :root {
-    --kimai-public-holiday: var(--tblr-lime);
-    --kimai-holiday: var(--tblr-green);
-    --kimai-sickness: var(--tblr-yellow);
-    --kimai-time-off: var(--tblr-blue);
-    --kimai-other: var(--tblr-purple);
+    /* ---- Kimai status colors (midnight dark variants) ---- */
+    --kimai-public-holiday: #84cc16;
+    --kimai-holiday: #10B981;
+    --kimai-sickness: #F59E0B;
+    --kimai-time-off: #0EA5E9;
+    --kimai-other: #6366F1;
 
-    --kimai-public-holiday-bg: var(--tblr-lime-lt);
-    --kimai-holiday-bg: var(--tblr-green-lt);
-    --kimai-sickness-bg: var(--tblr-yellow-lt);
-    --kimai-time-off-bg: var(--tblr-blue-lt);
-    --kimai-other-bg: var(--tblr-purple-lt);
+    --kimai-public-holiday-bg: rgba(132, 204, 22, 0.12);
+    --kimai-holiday-bg: rgba(16, 185, 129, 0.12);
+    --kimai-sickness-bg: rgba(245, 158, 11, 0.12);
+    --kimai-time-off-bg: rgba(14, 165, 233, 0.12);
+    --kimai-other-bg: rgba(99, 102, 241, 0.12);
 
-    --kimai-unexpected-bg: var(--tblr-pink-lt);
-    --kimai-missing-bg: var(--tblr-pink-lt);
-    --kimai-weekend-bg: var(--tblr-bg-surface-tertiary);
+    --kimai-unexpected-bg: rgba(236, 72, 153, 0.12);
+    --kimai-missing-bg: rgba(236, 72, 153, 0.12);
+    --kimai-weekend-bg: #0f172a;
 }
 
 .public-holiday { color: var(--kimai-public-holiday); }

@@ -1,0 +1,47 @@
+{% extends '@Approval/layout.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block report_title %}{{ report_title|trans }}{% endblock %}
+
+{% block page_actions %}
+    {% import "macros/widgets.html.twig" as widgets %}
+    {% if (is_granted('ROLE_SUPER_ADMIN')) %}
+        {% set actions = {'create': {'url': path('approval_create_overtime_history'), 'class': 'modal-ajax-form', 'attr': {'data-event': 'kimai.appOvertimeHistory'}, 'title': 'create'}} %}
+        {% set event = trigger('actions.create_overtime_history', {'actions': actions, 'view': 'create'}) %}
+        {{ widgets.page_actions(event.payload.actions) }}
+    {% endif %}
+{% endblock %}
+
+{% block report %}
+    {% set tableName = 'overtime_history' %}
+
+    <p>{{ 'description.overtime_history'|trans }}</p>
+
+    <table class="table table-hover dataTable">
+        <thead>
+            <tr>
+                <th class="w-min"></th>
+                <th>{{ 'user'|trans }}</th>
+                <th>{{ 'date'|trans }}</th>
+                <th>{{ 'duration'|trans }}</th>
+                <th class="actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in overtimeHistory %}
+                <tr>
+                    <td>{{ widgets.user_avatar(entry.user) }}</td>
+                    <td>{{ widgets.username(entry.user) }}</td>
+                    <td class="text-center">{{ entry.applyDate | date_format('Y-m-d') }}</td>
+                    <td class="text-center">{{ entry.duration | duration }}</td>
+                    <td class="actions">
+                        {% set deleteLinkPath = path('delete_overtime_history', {'entryId': entry.id }) %}
+                        <a href="{{ deleteLinkPath }}" class="btn btn-trash btn-icon api-link text-red" data-event="kimai.historyDelete" data-method="GET" data-question="confirm.delete" data-msg-error="action.delete.error" data-msg-success="action.delete.success">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
