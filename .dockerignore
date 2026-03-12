@@ -1,2 +1,10 @@
 .git
+.github
 Dockerfile.original
+node_modules
+var/cache
+var/log
+var/sessions
+tests
+*.md
+!README.md

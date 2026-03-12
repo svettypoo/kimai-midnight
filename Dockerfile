@@ -1,4 +1,4 @@
-# Kimai — Railway single-stage Apache build
+# Kimai Midnight — Railway single-stage Apache build
 # Connects to Railway MySQL service via DATABASE_URL env var
 
 FROM php:8.3-apache-bookworm
@@ -12,14 +12,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         haveged \
         unzip \
         curl \
-        # PHP extension build deps
         libldap2-dev \
         libicu-dev \
         libpng-dev \
         libzip-dev \
         libxslt1-dev \
         libfreetype6-dev \
-        # Runtime libs
         libicu72 \
         libldap-common \
         libpng16-16 \
@@ -57,15 +55,15 @@ RUN echo "Listen 8001" > /etc/apache2/ports.conf && \
     a2enmod rewrite && \
     touch /use_apache
 
-COPY .docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY docker-assets/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # ── Copy application source ─────────────────────────────────────────
 COPY --chown=www-data:www-data . /opt/kimai
 
 # ── Copy Docker assets ──────────────────────────────────────────────
-COPY .docker /assets
-COPY .docker/dbtest.php /dbtest.php
-COPY .docker/entrypoint.sh /entrypoint.sh
+COPY docker-assets /assets
+COPY docker-assets/dbtest.php /dbtest.php
+COPY docker-assets/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # ── Composer install (production) ────────────────────────────────────
