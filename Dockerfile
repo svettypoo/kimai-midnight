@@ -39,8 +39,8 @@ COPY docker-assets/dbtest.php /dbtest.php
 COPY docker-assets/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# ── Debug: verify source files ────────────────────────────────────────
-RUN ls -la /opt/kimai/package.json /opt/kimai/webpack.config.js /opt/kimai/composer.json && echo "Files verified"
+# ── Debug: list all root files ────────────────────────────────────────
+RUN echo "=== ALL FILES IN /opt/kimai root ===" && ls -la /opt/kimai/ && echo "=== LOOKING FOR package.json ===" && find /opt/kimai -maxdepth 2 -name "package.json" -o -name "webpack.config.js" | head -20
 
 # ── Frontend build (npm) ─────────────────────────────────────────────
 RUN npm install --no-fund --no-audit && \
