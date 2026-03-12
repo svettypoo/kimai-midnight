@@ -90,6 +90,12 @@ function runServer() {
   /opt/kimai/bin/console kimai:reload --env="$APP_ENV"
   chown -R $USER_ID:$GROUP_ID /opt/kimai/var
   if [ -e /use_apache ]; then
+    # Fix: ensure only one MPM is loaded
+    rm -f /etc/apache2/mods-enabled/mpm_event.load /etc/apache2/mods-enabled/mpm_event.conf \
+          /etc/apache2/mods-enabled/mpm_worker.load /etc/apache2/mods-enabled/mpm_worker.conf
+    # Ensure prefork is enabled
+    ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load 2>/dev/null
+    ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf 2>/dev/null
     exec /usr/sbin/apache2 -D FOREGROUND
   elif [ -e /use_fpm ]; then
     exec php-fpm
