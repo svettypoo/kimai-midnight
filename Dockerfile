@@ -118,7 +118,8 @@ ENV USER_ID=
 ENV GROUP_ID=
 ENV memory_limit=512M
 
-VOLUME ["/opt/kimai/var"]
+# Railway volumes configured via dashboard, not VOLUME directive
+# VOLUME ["/opt/kimai/var"]
 
 EXPOSE 8001
 
