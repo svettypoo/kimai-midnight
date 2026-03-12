@@ -39,6 +39,9 @@ COPY docker-assets/dbtest.php /dbtest.php
 COPY docker-assets/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# ── Debug: verify source files ────────────────────────────────────────
+RUN ls -la /opt/kimai/package.json /opt/kimai/webpack.config.js /opt/kimai/composer.json && echo "Files verified"
+
 # ── Frontend build (npm) ─────────────────────────────────────────────
 RUN npm install --no-fund --no-audit && \
     npx encore production --color && \
