@@ -118,9 +118,6 @@ ENV USER_ID=
 ENV GROUP_ID=
 ENV memory_limit=512M
 
-# Railway volumes configured via dashboard, not VOLUME directive
-# VOLUME ["/opt/kimai/var"]
-
 EXPOSE 8001
 
 CMD ["/entrypoint.sh"]
