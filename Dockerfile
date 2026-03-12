@@ -78,9 +78,11 @@ RUN export COMPOSER_HOME=/composer && \
 
 # ── Build frontend assets (Webpack Encore) ───────────────────────────
 WORKDIR /opt/kimai
-RUN yarn install && \
-    npx encore production && \
-    rm -rf node_modules
+RUN corepack enable && \
+    corepack prepare yarn@4.5.3 --activate && \
+    yarn install && \
+    yarn build && \
+    rm -rf node_modules .yarn
 
 # ── PHP production ini ───────────────────────────────────────────────
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini && \
