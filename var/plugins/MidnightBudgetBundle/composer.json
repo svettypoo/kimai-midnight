@@ -1,0 +1,28 @@
+{
+    "name": "stproperties/midnight-budget",
+    "description": "Project budget tracking with threshold alerts",
+    "type": "kimai-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "kimai",
+        "kimai-plugin"
+    ],
+    "license": "AGPL-3.0",
+    "authors": [
+        {
+            "name": "S&T Properties",
+            "homepage": "https://stproperties.com"
+        }
+    ],
+    "extra": {
+        "kimai": {
+            "require": 21700,
+            "name": "MidnightBudget"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "KimaiPlugin\\MidnightBudgetBundle\\": ""
+        }
+    }
+}
